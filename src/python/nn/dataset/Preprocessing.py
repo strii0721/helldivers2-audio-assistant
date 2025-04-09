@@ -1,4 +1,4 @@
-from torch.utils.data import Dataset
+from scipy.signal import butter, lfilter
 import torchaudio
 import torch
 import torchaudio.transforms as T
@@ -40,3 +40,13 @@ class Preprocessing:
                                      hop_length=64)
         audio = transform(audio)
         return audio
+    
+    @staticmethod
+    def bandpass_filter(audio, sample_rate, high_cut, low_cut, order = 6):
+        nyquist = 0.5 * sample_rate
+        low = low_cut / nyquist
+        high = high_cut / nyquist
+
+        b, a = butter(order, [low, high], btype='band')  # 带通滤波器
+        filtered_audio = lfilter(b, a, audio)
+        return filtered_audio

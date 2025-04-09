@@ -21,8 +21,8 @@ if __name__ == "__main__":
     INTERVAL = 0.8
     
     # 前有神经网络设置的预感
-    BATCH_SIZE = 16
-    NUM_EPOCHS = 50
+    BATCH_SIZE = 128
+    NUM_EPOCHS = 30
     LEARNING_RATE = 0.001
     
     logger = Log4P(enable_level = True,
