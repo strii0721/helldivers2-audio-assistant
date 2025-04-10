@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.optim as optim
+import math
 
 
 if __name__ == "__main__":
@@ -22,8 +23,9 @@ if __name__ == "__main__":
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 128
-    NUM_EPOCHS = 30
-    LEARNING_RATE = 0.001
+    NUM_EPOCHS = 100
+    INITIAL_LEARNING_RATE = 0.0001
+    MIN_LEARNING_RATE = 1e-5
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
@@ -39,12 +41,20 @@ if __name__ == "__main__":
                          length = INTERVAL)
     dataloader = DataLoader(dataset, 
                             batch_size = BATCH_SIZE, 
-                            shuffle=True)
+                            shuffle=True,
+                            num_workers = 6,
+                            pin_memory=True,
+                            persistent_workers=True)
     
     model = CmdNetwork(category_number).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), 
-                           lr=LEARNING_RATE)
+                           lr=INITIAL_LEARNING_RATE)
+    def lr_lambda(epoch):
+        learning_rate = INITIAL_LEARNING_RATE * (0.95 ** (epoch -1))
+        return max(learning_rate, MIN_LEARNING_RATE)
+    
+    # scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lr_lambda)
     
     for epoch in range(NUM_EPOCHS):
         model.train()
@@ -52,8 +62,8 @@ if __name__ == "__main__":
         correct = 0
         total = 0
         for inputs, labels in dataloader:
-            inputs = inputs.to(device)
-            labels = labels.to(device)
+            inputs = inputs.to(device, non_blocking=True)
+            labels = labels.to(device, non_blocking=True)
 
             if inputs.dim() == 3:  # [B, Freq, Time] → [B, 1, Freq, Time]
                 inputs = inputs.unsqueeze(1)
@@ -64,6 +74,7 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            # scheduler.step()
 
             running_loss += loss.item() * inputs.size(0)
             _, predicted = torch.max(outputs.data, 1)
@@ -72,7 +83,7 @@ if __name__ == "__main__":
 
         epoch_loss = running_loss / len(dataset)
         epoch_acc = correct / total * 100
-        logger.info(f"Epoch [{epoch+1}/{NUM_EPOCHS}] Loss: {epoch_loss:.4f} Acc: {epoch_acc:.2f}%")
+        logger.info(f"Epoch [{epoch+1}/{NUM_EPOCHS}] Loss: {epoch_loss:.4f} Acc: {epoch_acc:.2f}% LR: {optimizer.param_groups[0]['lr']:.6f}")
 
     model_path = MODEL_PATH
     torch.save(model.state_dict(), model_path)

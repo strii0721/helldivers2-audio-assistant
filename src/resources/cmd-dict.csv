@@ -1,0 +1,16 @@
+index,call_sign,command_sequence,name
+0,白噪音,,silent
+1,空爆,↓↑↑←→,rl-77
+2,火箭炮塔,↓↑→→←,a-mls-4x
+3,机枪炮塔,↓↑→→↑,a-mg-43
+4,加农炮塔,↓↑→↑←↑,a-ac-8
+5,无后座,↓←→→←,gr-8
+6,电磁迫击炮,↓↑→←→,a-m-23
+7,SOS,↑↓→↑,sos
+8,增援,↑↓→←↑,reinforce
+9,补给,↓↓↑→,resupply
+10,地狱火,↓↑←↓↑→↓↑,hellbomb
+11,轨道激光,→↓↑→↓,orbit-laser
+12,轨道汽油弹,→→↓←→↑,orbit-nap
+13,500千克,↑→↓↓↓,500kg
+14,指令,,command

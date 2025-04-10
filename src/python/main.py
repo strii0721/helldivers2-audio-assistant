@@ -8,33 +8,23 @@ import sounddevice as sd
 import torch
 import torch.nn.functional as F
 import time
+import csv
 
 if __name__ == "__main__":
     
     DATASET_BASE = "src/resources/dat"
     MODEL_PATH = "src/resources/model.pth"
+    DICT_PATH = "src/resources/cmd-dict.csv"
     
     SAMPLE_RATE = 48000
     INTERVAL = 0.8
     
     THRESHOLD = 0.6
     CMD_TIMEOUT = 3
-    
-    CMD_DICT = {
-        1: ["空爆", "↓↑↑←→"],
-        2: ["火箭炮塔", "↓↑→→←"],
-        3: ["机枪炮塔", "↓↑→→↑"],
-        4: ["加农炮塔", "↓↑→↑←↑"],
-        5: ["无后座", "↓←→→←"],
-        6: ["电磁迫击炮", "↓↑→←→"],
-        7: ["SOS", "↑↓→↑"],
-        8: ["增援", "↑↓→←↑"],
-        9: ["补给", "↓↓↑→"],
-        10: ["地狱火", "↓↑←↓↑→↓↑"],
-        11: ["轨道激光", "→↓↑→↓"],
-        12: ["轨道汽油弹", "→→↓←→↑"],
-        13: ["500千克", "↑→↓↓↓"],
-    }
+        
+    with open(DICT_PATH, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        cmd_dict = [row for row in reader]
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
@@ -78,12 +68,12 @@ if __name__ == "__main__":
                      ticker = time.time()
                 else:
                     if command_start:
-                        command_name = CMD_DICT[pred_index][0]
-                        command_sequence = CMD_DICT[pred_index][1]
+                        call_sign = cmd_dict[pred_index]["call_sign"]
+                        command_sequence = cmd_dict[pred_index]["command_sequence"]
                         keyboardSimulator.read_cmd_seq(command_sequence)
                         keyboardSimulator.end()
                         command_start = False
-                        logger.info(f"▶️  {command_name}：{command_sequence}")
+                        logger.info(f"▶️  {call_sign}：{command_sequence}")
             else:
                 if command_start and time.time() - ticker > CMD_TIMEOUT:
                     keyboardSimulator.end()
