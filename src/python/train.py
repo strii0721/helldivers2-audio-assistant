@@ -23,9 +23,9 @@ if __name__ == "__main__":
     # 前有神经网络设置的预感
     BATCH_SIZE = 128
     NUM_EPOCHS = 100
-    INITIAL_LEARNING_RATE = 0.005
+    INITIAL_LEARNING_RATE = 0.010
     MIN_LEARNING_RATE = 1e-5
-    LR_DECREASE_FACTOR = 0.95
+    LR_DECREASE_FACTOR = 0.90
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,

@@ -8,6 +8,7 @@ pip install src\resources\devtoolkit-0.1.0.2025032502-py3-none-any.whl
 1. 在战备字典文件 [cmd-dict.csv](src/resources/cmd-dict.csv) 文件中填写需要使用语音呼叫的战备，格式为{索引},{呼号},{指令序列},{内部代号}
 2. 运行 [record.py](src/python/record.py) 程序自动录制指令片段（默认1秒，这是最佳实践，可以改但是需要改很多文件很麻烦）。[record.py](src/python/record.py) 程序会每隔1秒随机报出一个在战备字典中注册过的战备的呼号，只需要念出呼号程序便会自动录制。注意，0号索引是环境白噪音，当 [record.py](src/python/record.py) 随机出“白噪音“的呼号时保持沉默即可。另外14号索引是语音助手的激活指令，这里也加入训练集训练，当record.py 随机出“指令”的呼号时只需要念“指令”两个字就行。
 3. 对于默认的网络，每一个战备的样本在300条以上准确率会比较高
+4. 推荐开着绝地潜兵的视频录制训练集，以充分学习战场白噪音
 
 ## 训练
 1. 运行 [train.py](src/python/train.py) 即可使用默认 CRNN 进行训练，默认100轮。所有神经网络有关代码都在 [nn](src/python/nn) 包下，有能力可自行修改。

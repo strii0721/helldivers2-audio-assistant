@@ -15,12 +15,13 @@ class CmdDataset(Dataset):
         self.dataframe = dataframe
         self.sample_rate = sample_rate
         self.length = length
+        self.label_mapper = {}
         
         # 前有自动创建标签-索引映射的预感
         with open(self.DICT_PATH, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                self.label_mapper[row["name"]] = row["index"]
+                self.label_mapper[row["name"]] = int(row["index"])
 
         
     def __getitem__(self, idx):

@@ -1,5 +1,5 @@
 index,call_sign,command_sequence,name
-0,白噪音,,silent
+0,(...),,silent
 1,空爆,↓↑↑←→,rl-77
 2,火箭炮塔,↓↑→→←,a-mls-4x
 3,机枪炮塔,↓↑→→↑,a-mg-43
@@ -15,3 +15,11 @@ index,call_sign,command_sequence,name
 13,500千克,↑→↓↓↓,500kg
 14,指令,,command
 15,上传数据,←→↑↑↑,upload-data
+16,特斯拉塔,↓↑→↑←→,a-arc-3
+17,电弧,↓→↓↑←←,arc-3
+18,迫击炮,↓↑→→↓,a-m-12
+19,导弹机甲,←↓→↑←↓↓,exo-45
+20,机枪机甲,←↓→↑←↓↑,exo-49
+21,激光狗,↓↑←↑→→,ax-las-5
+22,载具,←↓→↓→↓↑,m-102
+23,类星体,↓↓↑←→,las-99

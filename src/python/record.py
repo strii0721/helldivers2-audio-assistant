@@ -36,7 +36,7 @@ if __name__ == "__main__":
     time.sleep(1)
     while True:
         epoch += 1
-        stratagems_index = random.randint(0, 14)                  # 随机战备
+        stratagems_index = random.randint(0, 23)                  # 随机战备
         # stratagems_index = 14                                       # 指定战备索引
         stratagems_name = cmd_dict[stratagems_index]["name"]
         stratagems_call_sign = cmd_dict[stratagems_index]["call_sign"]
@@ -52,4 +52,6 @@ if __name__ == "__main__":
         logger.info(f"样本长度:{time.time() - start:.2f} 秒")
         sf.write(audio_sav_path, audio, SAMPLE_RATE)
         
-        
+        # 临时的数据增强手段，记得注释掉！
+        audio_sav_path_copy = f"{audio_save_dir}/{stratagems_name}-{time_stamp} copy.{AUDIO_EXT}"
+        sf.write(audio_sav_path_copy, audio, SAMPLE_RATE)
