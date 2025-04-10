@@ -11,24 +11,24 @@ class KeyboardSimulator:
             match cmd:
                 case "↑":
                     self.controller.press(Key.up)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     self.controller.release(Key.up)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                 case "↓":
                     self.controller.press(Key.down)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     self.controller.release(Key.down)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                 case "←":
                     self.controller.press(Key.left)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     self.controller.release(Key.left)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                 case "→":
                     self.controller.press(Key.right)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
                     self.controller.release(Key.right)
-                    time.sleep(0.02)
+                    time.sleep(0.03)
     
     def start(self):
         self.controller.press(Key.ctrl)

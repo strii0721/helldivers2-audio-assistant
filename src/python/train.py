@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.optim as optim
-import math
 
 
 if __name__ == "__main__":
@@ -24,7 +23,9 @@ if __name__ == "__main__":
     # 前有神经网络设置的预感
     BATCH_SIZE = 128
     NUM_EPOCHS = 100
-    LEARNING_RATE = 0.001
+    INITIAL_LEARNING_RATE = 0.005
+    MIN_LEARNING_RATE = 1e-5
+    LR_DECREASE_FACTOR = 0.95
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
@@ -48,7 +49,9 @@ if __name__ == "__main__":
     model = CmdNetwork(category_number).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), 
-                           lr=LEARNING_RATE)
+                           lr=INITIAL_LEARNING_RATE)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, 
+                                                 gamma = LR_DECREASE_FACTOR)
     
     for epoch in range(NUM_EPOCHS):
         model.train()
@@ -73,7 +76,13 @@ if __name__ == "__main__":
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-
+        
+        # 献上指数衰减的学习率
+        scheduler.step()
+        for param_group in optimizer.param_groups:
+            if param_group['lr'] < MIN_LEARNING_RATE:
+                param_group['lr'] = MIN_LEARNING_RATE
+        
         epoch_loss = running_loss / len(dataset)
         epoch_acc = correct / total * 100
         logger.info(f"轮次 [{epoch+1}/{NUM_EPOCHS}] 损失: {epoch_loss:.4f} 训练集准确率: {epoch_acc:.2f}% 本轮学习率: {optimizer.param_groups[0]['lr']:.6f}")

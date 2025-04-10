@@ -2,27 +2,11 @@ from nn.dataset.Preprocessing import Preprocessing
 
 from torch.utils.data import Dataset
 import torchaudio
-import torchaudio.transforms as T
+import csv
 
 class CmdDataset(Dataset):
     
-    label_mapper = {
-            "silent": 0,            # 白噪音
-            "rl-77": 1,             # 空爆
-            "a-mls-4x": 2,          # 火箭炮塔
-            "a-mg-43": 3,           # 机枪炮塔
-            "a-ac-8": 4,            # 加农炮塔
-            "gr-8": 5,              # 无后座
-            "a-m-23": 6,            # 电磁迫击炮
-            "sos": 7,               # SOS
-            "reinforce": 8,         # 增援
-            "resupply": 9,          # 补给
-            "hellbomb": 10,         # 地狱火
-            "orbit-laser": 11,      # 轨道激光
-            "orbit-nap": 12,        # 轨道汽油弹
-            "500kg": 13,            # 500千克
-            "command": 14,          # 指令
-        }
+    DICT_PATH = "src/resources/cmd-dict.csv"
     
     def __init__(self, 
                  dataframe,
@@ -31,6 +15,13 @@ class CmdDataset(Dataset):
         self.dataframe = dataframe
         self.sample_rate = sample_rate
         self.length = length
+        
+        # 前有自动创建标签-索引映射的预感
+        with open(self.DICT_PATH, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                self.label_mapper[row["name"]] = row["index"]
+
         
     def __getitem__(self, idx):
         audio, sr = torchaudio.load(self.dataframe.loc[idx, "sample_path"])

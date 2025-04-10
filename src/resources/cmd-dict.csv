@@ -14,3 +14,4 @@ index,call_sign,command_sequence,name
 12,轨道汽油弹,→→↓←→↑,orbit-nap
 13,500千克,↑→↓↓↓,500kg
 14,指令,,command
+15,上传数据,←→↑↑↑,upload-data
