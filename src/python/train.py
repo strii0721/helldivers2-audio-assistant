@@ -24,7 +24,7 @@ if __name__ == "__main__":
     BATCH_SIZE = 128
     NUM_EPOCHS = 100
     INITIAL_LEARNING_RATE = 0.010
-    MIN_LEARNING_RATE = 1e-5
+    MIN_LEARNING_RATE = 1e-6
     LR_DECREASE_FACTOR = 0.90
     
     logger = Log4P(enable_level = True,
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     dataloader = DataLoader(dataset, 
                             batch_size = BATCH_SIZE, 
                             shuffle=True,
-                            num_workers = 6,
+                            num_workers = 12,
                             pin_memory=True,
                             persistent_workers=True)
     

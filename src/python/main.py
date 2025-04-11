@@ -9,18 +9,24 @@ import torch
 import torch.nn.functional as F
 import time
 import csv
+import soundfile as sf
+import os
 
 if __name__ == "__main__":
     
     DATASET_BASE = "src/resources/dat"
     MODEL_PATH = "src/resources/model.pth"
     DICT_PATH = "src/resources/cmd-dict.csv"
+    AUDIO_SAVE_BASE = "src/resources/dat"
+    AUDIO_EXT = "wav"
     
     SAMPLE_RATE = 48000
     INTERVAL = 0.8
     
     THRESHOLD = 0.6
     CMD_TIMEOUT = 3
+    
+    REINFORCEMENT_MODE = False
         
     with open(DICT_PATH, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -44,6 +50,7 @@ if __name__ == "__main__":
     while True:
         audio = sd.rec(int(SAMPLE_RATE * INTERVAL), samplerate = SAMPLE_RATE, channels = 2)
         sd.wait()
+        audio_raw = audio
         audio = torch.tensor(audio.T, dtype=torch.float32) # [1, num_samples]
 
         audio = Preprocessing.isometricalization(audio = audio,
@@ -66,16 +73,27 @@ if __name__ == "__main__":
                      command_start = True
                      logger.info(f"✅  指令：")
                      ticker = time.time()
-                else:
-                    if command_start:
-                        call_sign = cmd_dict[pred_index]["call_sign"]
-                        command_sequence = cmd_dict[pred_index]["command_sequence"]
-                        keyboardSimulator.read_cmd_seq(command_sequence)
-                        keyboardSimulator.end()
-                        command_start = False
-                        logger.info(f"▶️  {call_sign}：{command_sequence}")
-            else:
-                if command_start and time.time() - ticker > CMD_TIMEOUT:
+                elif command_start:
+                    call_sign = cmd_dict[pred_index]["call_sign"]
+                    command_sequence = cmd_dict[pred_index]["command_sequence"]
+                    keyboardSimulator.read_cmd_seq(command_sequence)
+                    keyboardSimulator.end()
+                    command_start = False
+                    logger.info(f"▶️  {call_sign}：{command_sequence}")
+                    if REINFORCEMENT_MODE:
+                        judgement = input(f"识别是否正确？(y/index): ")
+                        if judgement == "y" or judgement == "Y": judgement = pred_index
+                        else: judgement = int(judgement)
+                        stratagems_name = cmd_dict[judgement]["name"]
+                        audio_save_dir = os.path.join(AUDIO_SAVE_BASE, stratagems_name)
+                        time_stamp = int(time.time())
+                        os.makedirs(audio_save_dir, exist_ok=True)
+                        audio_sav_path = f"{audio_save_dir}/{stratagems_name}-{time_stamp}-RI.{AUDIO_EXT}"
+                        sf.write(audio_sav_path, audio_raw, SAMPLE_RATE)
+                        audio_sav_path_copy = f"{audio_save_dir}/{stratagems_name}-{time_stamp}-RI copy.{AUDIO_EXT}"
+                        sf.write(audio_sav_path_copy, audio_raw, SAMPLE_RATE)
+                    
+            elif command_start and time.time() - ticker > CMD_TIMEOUT:
                     keyboardSimulator.end()
                     command_start = False
                     logger.info(f"❌  指令被取消")
