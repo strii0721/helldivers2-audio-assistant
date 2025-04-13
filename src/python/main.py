@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 elif command_start:
                     call_sign = cmd_dict[pred_index]["call_sign"]
                     command_sequence = cmd_dict[pred_index]["command_sequence"]
-                    keyboardSimulator.read_cmd_seq(command_sequence)
+                    if not REINFORCEMENT_MODE: keyboardSimulator.read_cmd_seq(command_sequence)
                     keyboardSimulator.end()
                     command_start = False
                     logger.info(f"▶️  {call_sign}：{command_sequence}")
