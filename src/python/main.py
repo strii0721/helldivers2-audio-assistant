@@ -23,7 +23,7 @@ if __name__ == "__main__":
     SAMPLE_RATE = 48000
     INTERVAL = 0.8
     
-    THRESHOLD = 0.6
+    THRESHOLD = 0.70
     CMD_TIMEOUT = 3
     
     REINFORCEMENT_MODE = False

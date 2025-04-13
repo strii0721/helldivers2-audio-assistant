@@ -10,13 +10,11 @@ class CmdNetwork(nn.Module):
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d((2, 2)),  # [B, 32, 32, T//2]
-
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d((2, 2)),  # [B, 64, 16, T//4]
-
-            nn.Dropout(0.3)
+            nn.Dropout(0.1)
         )
     
         self.pool = nn.AdaptiveAvgPool2d((16, None))
