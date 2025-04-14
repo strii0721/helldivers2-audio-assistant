@@ -14,7 +14,7 @@ class CmdNetwork(nn.Module):
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d((2, 2)),  # [B, 64, 16, T//4]
-            nn.Dropout(0.1)
+            nn.Dropout(0.2)
         )
     
         self.pool = nn.AdaptiveAvgPool2d((16, None))

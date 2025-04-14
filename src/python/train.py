@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.optim as optim
+from torch.optim.lr_scheduler import ExponentialLR, CosineAnnealingLR, ReduceLROnPlateau
 
 
 if __name__ == "__main__":
@@ -21,11 +22,12 @@ if __name__ == "__main__":
     INTERVAL = 0.8
     
     # 前有神经网络设置的预感
-    BATCH_SIZE = 128
+    BATCH_SIZE = 16
     NUM_EPOCHS = 100
-    INITIAL_LEARNING_RATE = 0.010
-    MIN_LEARNING_RATE = 1e-6
-    LR_DECREASE_FACTOR = 0.90
+    INITIAL_LEARNING_RATE = 0.001
+    MIN_LEARNING_RATE = 1e-5
+    LR_DECREASE_FACTOR = 0.95
+    T_MAX = 1.0 * NUM_EPOCHS
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
@@ -50,8 +52,15 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), 
                            lr=INITIAL_LEARNING_RATE)
-    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, 
-                                                 gamma = LR_DECREASE_FACTOR)
+    # scheduler = ExponentialLR(optimizer, 
+    #                           gamma = LR_DECREASE_FACTOR)
+    scheduler = CosineAnnealingLR(optimizer, 
+                                  T_max= T_MAX, 
+                                  eta_min= MIN_LEARNING_RATE)
+    # scheduler = ReduceLROnPlateau(optimizer, 
+    #                               mode='min', 
+    #                               factor=LR_DECREASE_FACTOR, 
+    #                               patience=5)
     
     for epoch in range(NUM_EPOCHS):
         model.train()
@@ -77,15 +86,16 @@ if __name__ == "__main__":
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
         
-        # 献上指数衰减的学习率
-        scheduler.step()
-        for param_group in optimizer.param_groups:
-            if param_group['lr'] < MIN_LEARNING_RATE:
-                param_group['lr'] = MIN_LEARNING_RATE
-        
         epoch_loss = running_loss / len(dataset)
         epoch_acc = correct / total * 100
         logger.info(f"轮次 [{epoch+1}/{NUM_EPOCHS}] 损失: {epoch_loss:.4f} 训练集准确率: {epoch_acc:.2f}% 本轮学习率: {optimizer.param_groups[0]['lr']:.6f}")
+        
+        # 调度器调整学习率
+        scheduler.step()
+        # scheduler.step(epoch_loss)
+        # for param_group in optimizer.param_groups:
+        #     if param_group['lr'] < MIN_LEARNING_RATE:
+        #         param_group['lr'] = MIN_LEARNING_RATE
 
     model_path = MODEL_PATH
     torch.save(model.state_dict(), model_path)
