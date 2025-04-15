@@ -2,6 +2,7 @@ from scipy.signal import butter, lfilter
 import torchaudio
 import torch
 import torchaudio.transforms as T
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
 class Preprocessing:
     
@@ -50,3 +51,10 @@ class Preprocessing:
         b, a = butter(order, [low, high], btype='band')  # 带通滤波器
         filtered_audio = lfilter(b, a, audio)
         return filtered_audio
+    
+    AUDIO_AUGMENT = Compose([
+        # AddGaussianNoise(min_amplitude=0.001, max_amplitude=0.015, p=0.5),
+        TimeStretch(min_rate=0.8, max_rate=1.25, p=0.5),
+        PitchShift(min_semitones=-2, max_semitones=2, p=0.5),
+        # Shift(min_shift=-0.5, max_shift=0.5, p=0.5),
+    ])

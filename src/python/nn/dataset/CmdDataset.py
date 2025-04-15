@@ -31,6 +31,11 @@ class CmdDataset(Dataset):
         audio = Preprocessing.resample(audio = audio, 
                                        orig_sample_rate = sr, 
                                        new_sample_rate=self.sample_rate)
+        
+        audio_np = audio.numpy()[0]
+        audio_np = Preprocessing.AUDIO_AUGMENT(samples=audio_np, 
+                                               sample_rate=self.sample_rate)
+        
         audio = Preprocessing.isometricalization(audio = audio,
                                                  sample_rate = self.sample_rate,
                                                  length = self.length)

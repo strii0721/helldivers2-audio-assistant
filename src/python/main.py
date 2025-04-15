@@ -26,7 +26,7 @@ if __name__ == "__main__":
     THRESHOLD = 0.80
     CMD_TIMEOUT = 3
     
-    REINFORCEMENT_MODE = True
+    REINFORCEMENT_MODE = False
         
     with open(DICT_PATH, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
