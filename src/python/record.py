@@ -36,8 +36,8 @@ if __name__ == "__main__":
     time.sleep(1)
     while True:
         epoch += 1
-        stratagems_index = random.randint(26, 43)                  # 随机战备
-        # stratagems_index = 14                                       # 指定战备索引
+        # stratagems_index = random.randint(26, 43)                  # 随机战备
+        stratagems_index = 14                                       # 指定战备索引
         stratagems_name = cmd_dict[stratagems_index]["name"]
         stratagems_call_sign = cmd_dict[stratagems_index]["call_sign"]
         audio_save_dir = os.path.join(SAVE_BASE, stratagems_name)

@@ -27,6 +27,7 @@ if __name__ == "__main__":
     CMD_TIMEOUT = 3
     
     REINFORCEMENT_MODE = False
+    DEBUG_MODE = False
         
     with open(DICT_PATH, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -67,6 +68,8 @@ if __name__ == "__main__":
             max_prob, pred_index = torch.max(probs, 1) # 获取最大概率及其索引
             max_prob = max_prob.item()
             pred_index = pred_index.item()
+            if DEBUG_MODE:
+                logger.info(f"最高概率标签：{cmd_dict[pred_index]["call_sign"]}  最高概率：{max_prob:.2f}")
             if max_prob >= THRESHOLD and pred_index != 0:
                 if pred_index == 14:
                      keyboardSimulator.start()

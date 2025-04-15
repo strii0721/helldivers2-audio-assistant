@@ -17,23 +17,27 @@ if __name__ == "__main__":
     MODEL_PATH = "src/resources/model.pth"
     LOG_FILE_PATH = "src/resources/train.log"
     
+    # 是否增量训练，读入和输出路径即为 MODEL_PATH
+    FINE_TUNING = True
+    
     # 前有音频信号设置的预感
     SAMPLE_RATE = 48000
     INTERVAL = 0.8
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 16
-    NUM_EPOCHS = 100
-    INITIAL_LEARNING_RATE = 0.001
-    MIN_LEARNING_RATE = 1e-5
+    NUM_EPOCHS = 50
+    INITIAL_LEARNING_RATE = 1e-5        # 从零开始的训练设置为1e-3，增量训练设置为1e-5
+    MIN_LEARNING_RATE = 1e-6
     LR_DECREASE_FACTOR = 0.95
     T_MAX = 1.0 * NUM_EPOCHS
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
                    enable_source = True,
-                   enable_log_file = False,
-                   source = "train")
+                   enable_log_file = True,
+                   source = "train",
+                   log_file_path = LOG_FILE_PATH)
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
@@ -49,6 +53,9 @@ if __name__ == "__main__":
                             persistent_workers=True)
     
     model = CmdNetwork(category_number).to(device)
+    if FINE_TUNING: 
+        state_dict = torch.load(MODEL_PATH, map_location=device)
+        model.load_state_dict(state_dict)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), 
                            lr=INITIAL_LEARNING_RATE)
