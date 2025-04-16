@@ -22,7 +22,7 @@ if __name__ == "__main__":
     
     # 前有音频信号设置的预感
     SAMPLE_RATE = 48000
-    INTERVAL = 1.0
+    INTERVAL = 0.8
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 16
