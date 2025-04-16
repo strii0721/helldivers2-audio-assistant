@@ -3,6 +3,8 @@ import time
 
 class KeyboardSimulator:
     
+    KEY_PRESS_INTERVAL = 0.04
+    
     def __init__(self):
         self.controller = Controller()
     
@@ -11,29 +13,29 @@ class KeyboardSimulator:
             match cmd:
                 case "↑":
                     self.controller.press(Key.up)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                     self.controller.release(Key.up)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                 case "↓":
                     self.controller.press(Key.down)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                     self.controller.release(Key.down)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                 case "←":
                     self.controller.press(Key.left)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                     self.controller.release(Key.left)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                 case "→":
                     self.controller.press(Key.right)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
                     self.controller.release(Key.right)
-                    time.sleep(0.04)
+                    time.sleep(self.KEY_PRESS_INTERVAL)
     
     def start(self):
         self.controller.press(Key.ctrl)
-        time.sleep(0.05)
+        time.sleep(self.KEY_PRESS_INTERVAL)
     
     def end(self):
         self.controller.release(Key.ctrl)
-        time.sleep(0.05)
+        time.sleep(self.KEY_PRESS_INTERVAL)

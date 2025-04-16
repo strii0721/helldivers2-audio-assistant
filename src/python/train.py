@@ -18,16 +18,16 @@ if __name__ == "__main__":
     LOG_FILE_PATH = "src/resources/train.log"
     
     # 是否增量训练，读入和输出路径即为 MODEL_PATH
-    FINE_TUNING = True
+    FINE_TUNING = False
     
     # 前有音频信号设置的预感
     SAMPLE_RATE = 48000
-    INTERVAL = 0.8
+    INTERVAL = 1.0
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 16
-    NUM_EPOCHS = 50
-    INITIAL_LEARNING_RATE = 1e-5        # 从零开始的训练设置为1e-3，增量训练设置为1e-5
+    NUM_EPOCHS = 120
+    INITIAL_LEARNING_RATE = 1e-3        # 从零开始的训练设置为1e-3，增量训练设置为1e-5
     MIN_LEARNING_RATE = 1e-6
     LR_DECREASE_FACTOR = 0.95
     T_MAX = 1.0 * NUM_EPOCHS

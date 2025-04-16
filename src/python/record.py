@@ -10,7 +10,7 @@ import csv
 if __name__ == "__main__":
     
     SAMPLE_RATE = 48000
-    INTERVAL = 1
+    INTERVAL = 1.0
     
     SAVE_BASE = "src/resources/dat"
     AUDIO_EXT = "wav"

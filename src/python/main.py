@@ -21,9 +21,9 @@ if __name__ == "__main__":
     AUDIO_EXT = "wav"
     
     SAMPLE_RATE = 48000
-    INTERVAL = 0.8
+    INTERVAL = 1.0
     
-    THRESHOLD = 0.80
+    THRESHOLD = 0.75
     CMD_TIMEOUT = 3
     
     REINFORCEMENT_MODE = False
