@@ -26,6 +26,7 @@ if __name__ == "__main__":
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 16
+    NUM_CORES = 12
     NUM_EPOCHS = 150
     INITIAL_LEARNING_RATE = 1e-3        # 从零开始的训练设置为1e-3，增量训练设置为1e-5
     MIN_LEARNING_RATE = 1e-6
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     dataloader = DataLoader(dataset, 
                             batch_size = BATCH_SIZE, 
                             shuffle=True,
-                            num_workers = 12,
+                            num_workers = NUM_CORES,
                             pin_memory=True,
                             persistent_workers=True)
     
