@@ -1,8 +1,12 @@
 ## 使用之前
 1. 使用 pip 安装一下环境和 [devtoolkit](src/resources/devtoolkit-0.1.0.2025032502-py3-none-any.whl) 库：（自己写的所以没法从网络安装，主要是用来记录日志的）
 ```(shell)
-conda env create -f src/resouirces/environment.yml
-pip install src\resources\devtoolkit-0.1.0.2025032502-py3-none-any.whl
+conda env create -f src/resources/environment.yml
+conda activate helldivers2-audio-assistant
+pip install src/resources/devtoolkit-0.1.0.2025032502-py3-none-any.whl
+
+# 或者直接使用初始化脚本（推荐）
+./initialization.ps1
 ```
 ## 获得训练集
 1. 在战备字典文件 [cmd-dict.csv](src/resources/cmd-dict.csv) 文件中填写需要使用语音呼叫的战备，格式为{索引},{呼号},{指令序列},{内部代号}
