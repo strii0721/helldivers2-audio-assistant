@@ -26,7 +26,7 @@ if __name__ == "__main__":
     
     # 前有神经网络设置的预感
     BATCH_SIZE = 16
-    NUM_EPOCHS = 120
+    NUM_EPOCHS = 150
     INITIAL_LEARNING_RATE = 1e-3        # 从零开始的训练设置为1e-3，增量训练设置为1e-5
     MIN_LEARNING_RATE = 1e-6
     LR_DECREASE_FACTOR = 0.95
