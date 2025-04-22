@@ -32,6 +32,7 @@ if __name__ == "__main__":
     with open(DICT_PATH, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         cmd_dict = [row for row in reader]
+        category_number = len(cmd_dict)
     
     logger = Log4P(enable_level = True,
                    enable_timestamp = True,
@@ -42,7 +43,6 @@ if __name__ == "__main__":
     keyboardSimulator = KeyboardSimulator()
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    _, category_number = DatasetUtils.get_dataframe_distributed(DATASET_BASE)
     model = CmdNetwork(category_number = category_number).to(device)
     model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     model.eval()
