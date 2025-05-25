@@ -5,7 +5,7 @@ index,call_sign,command_sequence,name
 3,机枪炮塔,↓↑→→↑,a-mg-43
 4,加农炮塔,↓↑→↑←↑,a-ac-8
 5,无后座,↓←→→←,gr-8
-6,电磁迫击炮,↓↑→←→,a-m-23
+6,电磁迫击炮,↓↑→↓→,a-m-23
 7,SOS,↑↓→↑,sos
 8,增援,↑↓→←↑,reinforce
 9,补给,↓↓↑→,resupply
